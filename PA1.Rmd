@@ -43,8 +43,7 @@ median(dailysteps$x, na.rm = T)
 ```{r}
 intervalMean <- aggregate(data$steps, by = list(data$interval), mean, na.rm = T)
 dailyMean <- aggregate(data$steps, by = list(data$date), mean, na.rm = T)
-allDayMean <- mean(dailyMean$x, na.rm = T)
-plot(intervalMean$x/allDayMean, type="l", xlab ="Interval", ylab = "Mean")
+plot(intervalMean$x, type="l", xlab ="Interval", ylab = "Mean")
 ```
 
 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
@@ -107,7 +106,7 @@ For this part the weekdays() function may be of some help here. Use the dataset 
 
 Create a new factor variable in the dataset with two levels -- "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 ```{r}
-imputedData$weekend <- ifelse(as.POSIXlt(data$date)$wday > 1, 0, 1)
+imputedData$weekend <- ifelse(as.POSIXlt(data$date)$wday > 1, "Weekday", "Weekend")
 ```
 Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). The plot should look something like the following, which was created using simulated data:
 
@@ -116,5 +115,7 @@ imputedIntervalDailyMean <- aggregate(imputedData$steps, by = list(imputedData$i
 library(ggplot2)
 ggplot(imputedIntervalDailyMean, aes(Group.1,x) ) +
         geom_line() +
+        xlab("Intervals") +
+        ylab("Steps mean") +
         facet_grid(Group.2 ~ .)
 ```
